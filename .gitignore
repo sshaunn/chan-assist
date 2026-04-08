@@ -25,6 +25,9 @@ AGENTS.md
 # Runtime data
 data/
 
+# Documentation (AI-generated, local only)
+doc/
+
 # OS
 .DS_Store
 Thumbs.db
