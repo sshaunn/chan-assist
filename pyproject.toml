@@ -1,0 +1,26 @@
+[project]
+name = "chan-assist"
+version = "0.1.0"
+description = "A-share candidate pool screening system based on chan.py"
+requires-python = ">=3.11"
+
+dependencies = [
+    "tushare>=1.4.0",
+    "akshare>=1.10.0",
+    "baostock>=0.8.8",
+    "matplotlib>=3.8.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.setuptools.packages.find]
+include = ["strategy*"]

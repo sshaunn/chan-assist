@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# Claude/AI generated docs (not project docs)
+CLAUDE.md
+AGENTS.md
+
+# Runtime data
+data/
+
+# OS
+.DS_Store
+Thumbs.db
