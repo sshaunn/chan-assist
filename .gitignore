@@ -18,15 +18,17 @@ build/
 # Claude Code
 .claude/
 
-# Claude/AI generated docs (not project docs)
-CLAUDE.md
+# AI agent docs (local only)
 AGENTS.md
+
+# Documentation (local only)
+doc/
 
 # Runtime data
 data/
 
-# Documentation (AI-generated, local only)
-doc/
+# Pytest cache
+.pytest_cache/
 
 # OS
 .DS_Store

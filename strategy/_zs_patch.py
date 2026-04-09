@@ -6,7 +6,7 @@ chan.py 的 normal 模式只用线段内反向笔构建中枢，
 短线段（3笔）反向笔不足时会遗漏。本模块补充这些遗漏。
 """
 from typing import List, Tuple
-from strategy.accessor import get_bi_list, get_zs_list
+from strategy._accessor import get_bi_list, get_zs_list
 
 
 def detect_3bi_overlap(b1, b2, b3) -> Tuple[bool, float, float]:

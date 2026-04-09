@@ -2,9 +2,12 @@
 买卖点修改器。
 
 对 chan.py 计算完成后的内存对象做买卖点增删。
-只修改内存，不修改源代码。用于画图前清理或规则过滤后更新。
+只修改内存，不修改源代码。原用于画图前清理或规则过滤后更新。
+
+注意：本模块为受控兼容方案，不默认接入主路径。
+只有在非侵入式过滤无法满足需求时才允许启用。
 """
-from typing import List, Dict, Optional, Set
+from typing import List, Optional, Set
 
 # 延迟导入 BSP_TYPE，避免在模块加载时就依赖 chan.py 的 sys.path
 _BSP_TYPE = None
@@ -54,18 +57,13 @@ def remove_bsp_from_chan(chan, bi_indices_to_remove: Set[int], types_to_remove: 
             continue
 
         if to_keep:
-            # 还有其他类型保留（比如同时标了 b2+b3b，只删 b2 保留 b3b）
             bsp.type = list(to_keep)
-            # 从被删类型的 store 中移除
             for bt in to_remove:
                 if bt in bsp_store:
-                    # bsp_store[bt] 是 tuple: (sell_list, buy_list)
-                    # bt[True]=bt[1]=buy_list, bt[False]=bt[0]=sell_list
                     buy_list = bsp_store[bt][True]
                     filtered_buy = [b for b in buy_list if b.bi.idx != bi_idx]
                     buy_list.clear()
                     buy_list.extend(filtered_buy)
-            # 把 bsp 加到保留类型的 store 中
             for bt in to_keep:
                 if bt not in bsp_store:
                     bsp_store[bt] = ([], [])
@@ -75,7 +73,6 @@ def remove_bsp_from_chan(chan, bi_indices_to_remove: Set[int], types_to_remove: 
             removed.append({"bi_idx": bi_idx, "removed_types": [t.value for t in to_remove],
                             "kept_types": [t.value for t in to_keep]})
         else:
-            # 全部类型都要删
             bsp.bi.bsp = None
             for bt in to_remove:
                 if bt in bsp_store:
