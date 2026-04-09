@@ -193,9 +193,12 @@ def run_scan(config: ScanConfig) -> dict:
         elif result.status == RESULT_STATUS_ERROR:
             error_count += 1
 
-        # 周期性 commit
+        # 周期性 commit + 进度输出
         if config.commit_every > 0 and processed_count % config.commit_every == 0:
             conn.commit()
+            print(f"  [{processed_count}/{total_symbols}] "
+                  f"hit={hit_count} error={error_count} "
+                  f"no_hit={processed_count - hit_count - error_count}")
 
     # 最终 commit
     conn.commit()

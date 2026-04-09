@@ -161,7 +161,7 @@ class TestCliModule:
         args = parse_args([])
         assert args.market == "A"
         assert args.db_path == "data/chan_assist.db"
-        assert args.limit is None
+        assert args.limit == 20
         assert args.symbols is None
         assert args.commit_every == 50
 

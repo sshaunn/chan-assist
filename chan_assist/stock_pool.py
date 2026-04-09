@@ -134,7 +134,7 @@ def filter_inquiry(pool: List[dict], days: int = 30) -> List[dict]:
     except ImportError:
         return pool  # akshare 未安装则跳过
 
-    # 收集近 N 天有问询/监管函的股票代码
+    # 收集近 N 天有问询/监管函的股票代码（只查工作日，跳过周末）
     flagged_codes = set()
     end = datetime.now()
     start = end - timedelta(days=days)
@@ -142,12 +142,13 @@ def filter_inquiry(pool: List[dict], days: int = 30) -> List[dict]:
     try:
         d = start
         while d <= end:
-            date_str = d.strftime("%Y%m%d")
-            df = ak.stock_notice_report(symbol="全部", date=date_str)
-            if df is not None and len(df) > 0:
-                inquiry = df[df["公告标题"].str.contains("问询|关注函|监管函|警示函", na=False)]
-                for code in inquiry["代码"].tolist():
-                    flagged_codes.add(str(code))
+            if d.weekday() < 5:  # 跳过周末
+                date_str = d.strftime("%Y%m%d")
+                df = ak.stock_notice_report(symbol="全部", date=date_str)
+                if df is not None and len(df) > 0:
+                    inquiry = df[df["公告标题"].str.contains("问询|关注函|监管函|警示函", na=False)]
+                    for code in inquiry["代码"].tolist():
+                        flagged_codes.add(str(code))
             d += timedelta(days=1)
     except Exception:
         return pool  # 查询失败不过滤
