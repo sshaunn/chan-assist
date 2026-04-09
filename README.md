@@ -63,7 +63,8 @@ cat > filters.json << 'EOF'
 {
     "exclude_industries": {"industries": ["银行", "保险"]},
     "market_cap": {"min": 50, "max": 800},
-    "target_bsp_types": ["3a", "3b"]
+    "target_bsp_types": ["3a", "3b"],
+    "lookback_days": 5
 }
 EOF
 
@@ -77,15 +78,16 @@ python scripts/run_scan.py \
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
-| `--market` | `A` | 市场标识 |
-| `--db-path` | `data/chan_assist.db` | SQLite 数据库路径 |
-| `--limit` | 无 | 限制扫描股票数 |
-| `--symbols` | 无 | 指定股票列表（空格分隔） |
-| `--commit-every` | `50` | 每 N 只股票提交一次事务 |
-| `--strategy` | `chan_default` | 策略名称 |
-| `--tushare-token` | 空 | TuShare API token |
-| `--target-types` | 无 | 目标买点类型（如 2 2s 3a 3b），不指定则全类型 |
+| `--tushare-token` | 空 | TuShare API token（默认模式必填） |
+| `--limit` | `20` | 扫描股票数，传 `0` 则全量扫描 |
+| `--symbols` | 无 | 指定股票列表（空格分隔），覆盖默认池 |
+| `--lookback-days` | `2` | 买点回看交易日数，超过此天数的买点不算命中 |
+| `--target-types` | 无 | 目标买点类型（如 `2 2s 3a 3b`），不指定则全类型 |
 | `--filter-config` | 无 | 过滤配置 JSON 文件路径 |
+| `--commit-every` | `50` | 每 N 只股票提交一次事务 |
+| `--db-path` | `data/chan_assist.db` | SQLite 数据库路径 |
+| `--market` | `A` | 市场标识 |
+| `--strategy` | `chan_default` | 策略名称 |
 
 ### 可用过滤条件
 
@@ -95,6 +97,7 @@ python scripts/run_scan.py \
 | `exclude_industries` | `{"industries": ["银行"]}` | 排除行业 |
 | `inquiry_days` | `{"days": 30}` | 排除近 N 天有问询函/监管函的股票 |
 | `target_bsp_types` | `["2", "3a", "3b"]` | 目标买点类型 |
+| `lookback_days` | `5` | 买点回看天数（覆盖默认值 2） |
 
 ## 查看结果
 
